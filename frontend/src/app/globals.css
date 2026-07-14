@@ -1,0 +1,129 @@
+@import "tailwindcss";
+
+:root {
+  --background: #FFFFFF; /* Pure White background */
+  --background-alt: #F8FAFC; /* Luxury Off-White */
+  --foreground: #0F172A; /* Slate 900 for modern high contrast readability */
+  --navy-royal: #0A1128; /* Deep Royal Navy Blue */
+  --navy-light: #111E45; /* Lighter navy for gradients/cards */
+  
+  --gold-primary: #C5A85D; /* Sophisticated Premium Gold */
+  --gold-light: #E6D5B3; /* Champagne Gold tint */
+  --gold-dark: #A1823B; /* Deep Amber Gold shadow */
+  
+  --slate-text: #0F172A;
+  --slate-light: #334155;
+  --slate-muted: #64748B;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-background-alt: var(--background-alt);
+  --color-foreground: var(--foreground);
+  
+  --color-navy-royal: var(--navy-royal);
+  --color-navy-light: var(--navy-light);
+  --color-gold-primary: var(--gold-primary);
+  --color-gold-light: var(--gold-light);
+  --color-gold-dark: var(--gold-dark);
+  
+  --color-slate-text: var(--slate-text);
+  --color-slate-light: var(--slate-light);
+  --color-slate-muted: var(--slate-muted);
+  
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  overflow-x: hidden;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--navy-royal);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--gold-primary);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--gold-light);
+}
+
+/* Custom premium styles */
+.luxury-text-gold {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold-primary) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.luxury-text-navy {
+  background: linear-gradient(135deg, var(--navy-royal) 0%, var(--navy-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.luxury-gold-border {
+  border-image: linear-gradient(to right, var(--gold-primary), var(--gold-light), var(--gold-dark)) 1;
+}
+
+.glass-navbar {
+  background: rgba(10, 17, 40, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(197, 168, 93, 0.15);
+}
+
+.glass-card-dark {
+  background: rgba(10, 17, 40, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 93, 0.15);
+}
+
+.glass-card-light {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 168, 93, 0.1);
+}
+
+.hover-gold-glow:hover {
+  box-shadow: 0 0 15px rgba(197, 168, 93, 0.3);
+  border-color: var(--gold-primary);
+}
+
+@keyframes gradient-drift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-gradient-drift {
+  background-size: 200% 200%;
+  animation: gradient-drift 20s ease infinite;
+}
+
+@keyframes custom-bounce {
+  0%, 100% { transform: translateY(0) translateX(-50%); }
+  50% { transform: translateY(-10px) translateX(-50%); }
+}
+
+.animate-custom-bounce {
+  animation: custom-bounce 2.5s infinite ease-in-out;
+}
+
+
