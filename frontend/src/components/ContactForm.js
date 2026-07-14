@@ -61,16 +61,16 @@ export default function ContactForm() {
                   <a
                     key={idx}
                     href={item.href}
-                    className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 bg-background-alt hover:border-gold-primary/30 hover:bg-white transition-all duration-300 hover:shadow-xl hover:shadow-gold-primary/5 group"
+                    className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 bg-background-alt hover:border-gold-primary/30 hover:bg-white transition-all duration-300 hover:shadow-xl hover:shadow-gold-primary/5 group overflow-hidden"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-primary shadow-inner group-hover:bg-gold-primary group-hover:text-white transition-colors duration-300">
+                    <div className="w-10 h-10 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-primary shadow-inner group-hover:bg-gold-primary group-hover:text-white transition-colors duration-300 shrink-0">
                       <Icon className="w-5 h-5" />
                     </div>
-                    <div>
+                    <div className="min-w-0 flex-1">
                       <div className="text-[10px] uppercase font-bold tracking-widest text-slate-muted">
                         {item.label}
                       </div>
-                      <div className="text-sm font-extrabold text-navy-royal">
+                      <div className="text-sm font-extrabold text-navy-royal break-all">
                         {item.value}
                       </div>
                     </div>
