@@ -14,11 +14,11 @@ export default function GalleryPage() {
   const [filter, setFilter] = useState("all"); // all, images, videos
 
   const mediaItems = [
-    { type: "image", src: "/projects/drone_luxury_plots.png", title: "Luxury Plotted Development", category: "drones", size: "col-span-2 row-span-1 h-80" },
-    { type: "video", src: "/projects/arani%20video%201.mp4", title: "Arani Premium Development walkthrough", category: "videos", size: "col-span-1 row-span-1 h-80" },
-    { type: "image", src: "/projects/sriperumbudur%20house%204%20portions.jpeg", title: "Gated Townhouse Elevations", category: "images", size: "col-span-1 row-span-1 h-80" },
-    { type: "video", src: "/projects/berigai%20video%201.mp4", title: "Luxury Gated Layout walkthrough", category: "videos", size: "col-span-1 row-span-1 h-80" },
-    { type: "image", src: "/projects/sunrise%20avenue.jpeg", title: "Entrance Elevation Archway", category: "images", size: "col-span-2 row-span-1 h-80" },
+    { type: "image", src: "/projects/drone_luxury_plots.png", title: "Luxury Plotted Development", category: "images", tag: "drones", size: "col-span-2 row-span-1 h-80" },
+    { type: "video", src: "/projects/arani-video-1.mp4", title: "Arani Premium Development walkthrough", category: "videos", size: "col-span-1 row-span-1 h-80" },
+    { type: "image", src: "/projects/sriperumbudur-house-4-portions.jpeg", title: "Gated Townhouse Elevations", category: "images", size: "col-span-1 row-span-1 h-80" },
+    { type: "video", src: "/projects/berigai-video-1.mp4", title: "Luxury Gated Layout walkthrough", category: "videos", size: "col-span-1 row-span-1 h-80" },
+    { type: "image", src: "/projects/sunrise-avenue.jpeg", title: "Entrance Elevation Archway", category: "images", size: "col-span-2 row-span-1 h-80" },
   ];
 
   const filteredItems = mediaItems.filter(item => {
@@ -118,7 +118,7 @@ export default function GalleryPage() {
                 {/* Overlay details */}
                 <div className="absolute bottom-0 left-0 right-0 p-5 bg-gradient-to-t from-black/85 via-black/45 to-transparent text-left pointer-events-none">
                   <span className="text-[8px] font-bold text-gold-light uppercase tracking-widest mb-1.5 block">
-                    {item.type} &bull; {item.category}
+                    {item.type} &bull; {item.tag || item.category}
                   </span>
                   <h4 className="text-sm font-extrabold text-white leading-tight tracking-tight">
                     {item.title}

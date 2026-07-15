@@ -8,38 +8,43 @@ import Footer from "@/components/Footer";
 import InquiryModal from "@/components/InquiryModal";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
-// Custom CountUp hook
+// Custom AboutCounter Component with IntersectionObserver
 function AboutCounter({ to, suffix = "", label }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    if (!isInView) return;
-    let start = 0;
-    const end = parseInt(to, 10);
-    if (isNaN(end)) return;
+    const el = ref.current;
+    if (!el) return;
 
-    const duration = 2000;
-    let startTime = null;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
 
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const easeProgress = progress * (2 - progress);
-      setCount(Math.floor(easeProgress * end));
+        const end = parseInt(to, 10);
+        if (isNaN(end)) return;
+        const duration = 2000;
+        let startTime = null;
 
-      if (progress < 1) {
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeProgress = progress * (2 - progress);
+          setCount(Math.floor(easeProgress * end));
+          if (progress < 1) window.requestAnimationFrame(animate);
+          else setCount(end);
+        };
         window.requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-      }
-    };
-    window.requestAnimationFrame(animate);
-  }, [isInView, to]);
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to]);
 
   return (
-    <div ref={ref} className="text-center p-4 border border-white/5 rounded-2xl bg-background-alt flex flex-col items-center">
+    <div ref={ref} className="text-center p-4 border border-white/5 rounded-2xl bg-background-alt flex flex-col items-center flex-1">
       <span className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
         {count.toLocaleString()}{suffix}
       </span>
@@ -161,9 +166,10 @@ export default function AboutPage() {
                 Our infrastructure standards—from concrete road setups to water connection lines—are engineered for permanence. We choose prime corridors in Tamil Nadu to secure high appreciation yields for our partners. Thank you for making us your trusted real estate developer.
               </p>
               <div className="h-[1px] w-full bg-white/5 mb-6" />
-              <div className="flex gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6">
                 <AboutCounter to="1200" suffix="+" label="Happy Families" />
                 <AboutCounter to="850" suffix="+" label="Plots Delivered" />
+                <AboutCounter to="100" suffix="+" label="Happy Customers" />
                 <AboutCounter to="15" suffix="+" label="Years of Trust" />
               </div>
             </div>

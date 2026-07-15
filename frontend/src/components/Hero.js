@@ -121,7 +121,7 @@ function CountUp({ to, suffix = "", prefix = "" }) {
         };
         window.requestAnimationFrame(animate);
       },
-      { threshold: 0.5 }
+      { threshold: 0.1 }
     );
     observer.observe(el);
     return () => observer.disconnect();
@@ -225,6 +225,7 @@ export default function Hero() {
   const stats = [
     { label: "Happy Families", value: "1200", suffix: "+" },
     { label: "Plots Sold",     value: "850",  suffix: "+" },
+    { label: "Happy Customers", value: "100",  suffix: "+" },
     { label: "Years of Trust", value: "15",   suffix: "+" },
   ];
 
@@ -340,7 +341,7 @@ export default function Hero() {
             {/* Gold top-border accent */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-primary to-transparent" />
 
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-gold-primary/15 items-center justify-center">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 divide-y-0 divide-x-0 md:divide-x divide-gold-primary/15 items-center justify-center">
               {stats.map((stat, idx) => (
                 <div
                   key={idx}

@@ -28,9 +28,9 @@ export default function Projects() {
       description: "Luxurious residential space offering secure community living with state-of-the-art infrastructure, wide concrete roads, and pristine environments.",
       badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200/50",
       media: [
-        { type: "video", src: "/projects/arani%20video%201.mp4" },
-        { type: "image", src: "/projects/sriperumbudur%20house%204%20portions.jpeg" },
-        { type: "image", src: "/projects/sunrise%20avenue.jpeg" }
+        { type: "video", src: "/projects/arani-video-1.mp4" },
+        { type: "image", src: "/projects/sriperumbudur-house-4-portions.jpeg" },
+        { type: "image", src: "/projects/sunrise-avenue.jpeg" }
       ],
       amenities: [
         { icon: ShieldCheck, text: "Gated Security" },
@@ -58,8 +58,8 @@ export default function Projects() {
       description: "Integrated gated township located in Sriperumbudur industrial hub. Features elite clubhouse, commercial zones, and children's playground areas.",
       badgeColor: "bg-amber-50 text-amber-700 border-amber-200/50",
       media: [
-        { type: "image", src: "/projects/sriperumbudur%20house%204%20portions.jpeg" },
-        { type: "image", src: "/projects/sunrise%20avenue.jpeg" }
+        { type: "image", src: "/projects/sriperumbudur-house-4-portions.jpeg" },
+        { type: "image", src: "/projects/sunrise-avenue.jpeg" }
       ],
       amenities: [
         { icon: Compass, text: "Clubhouse Access" },
@@ -87,9 +87,9 @@ export default function Projects() {
       description: "Elegant villa plots positioned amidst tranquil green boundaries. Premium underground utilities ready for immediate house construction.",
       badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200/50",
       media: [
-        { type: "video", src: "/projects/berigai%20video%201.mp4" },
-        { type: "image", src: "/projects/sunrise%20avenue.jpeg" },
-        { type: "image", src: "/projects/sriperumbudur%20house%204%20portions.jpeg" }
+        { type: "video", src: "/projects/berigai-video-1.mp4" },
+        { type: "image", src: "/projects/sunrise-avenue.jpeg" },
+        { type: "image", src: "/projects/sriperumbudur-house-4-portions.jpeg" }
       ],
       amenities: [
         { icon: Droplet, text: "24/7 Water Supply" },
@@ -117,8 +117,8 @@ export default function Projects() {
       description: "Phase 2 extension featuring grand entrance layout, wider tarmac roads, and proposed health clinics, catering to high-yield investment options.",
       badgeColor: "bg-amber-50 text-amber-700 border-amber-200/50",
       media: [
-        { type: "image", src: "/projects/sunrise%20avenue.jpeg" },
-        { type: "image", src: "/projects/sriperumbudur%20house%204%20portions.jpeg" }
+        { type: "image", src: "/projects/sunrise-avenue.jpeg" },
+        { type: "image", src: "/projects/sriperumbudur-house-4-portions.jpeg" }
       ],
       amenities: [
         { icon: Compass, text: "Elevated Entrance Arch" },

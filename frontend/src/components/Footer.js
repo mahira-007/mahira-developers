@@ -113,10 +113,10 @@ export default function Footer() {
         <div className="pt-8 border-t border-gold-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <span>&copy; {currentYear} Mahira Developers. All Rights Reserved.</span>
           <div className="flex gap-6">
-            <Link href="#" className="hover:text-gold-primary transition-colors">
+            <Link href="/terms" className="hover:text-gold-primary transition-colors">
               Terms & Conditions
             </Link>
-            <Link href="#" className="hover:text-gold-primary transition-colors">
+            <Link href="/privacy" className="hover:text-gold-primary transition-colors">
               Privacy Policy
             </Link>
             <span className="text-gold-primary">DTCP & RERA Approved</span>

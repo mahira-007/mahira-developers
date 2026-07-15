@@ -14,7 +14,7 @@ export default function ContactPage() {
   const companyDetails = {
     name: "Mahira Developers",
     address: "No.10, Sumathi Theatre Opposite, Bangalore Main Road, Sriperumbudur - 602105",
-    phone: "+91 94434 54395",
+    phone: "+919443454395",
     email: "mahiradevelopers@gmail.com",
     hours: "Monday – Saturday, 9:00 AM – 6:00 PM"
   };

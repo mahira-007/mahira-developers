@@ -5,7 +5,7 @@ import WhyChooseUs from "@/components/WhyChooseUs";
 import About from "@/components/About";
 import Testimonials from "@/components/Testimonials";
 import CTA from "@/components/CTA";
-import ContactForm from "@/components/ContactForm";
+import ShortContactCTA from "@/components/ShortContactCTA";
 import Footer from "@/components/Footer";
 import InquiryModal from "@/components/InquiryModal";
 import WhatsAppButton from "@/components/WhatsAppButton";
@@ -21,7 +21,7 @@ export default function Home() {
         <About />
         <Testimonials />
         <CTA />
-        <ContactForm />
+        <ShortContactCTA />
       </main>
       <Footer />
       <InquiryModal />
