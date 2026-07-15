@@ -111,7 +111,7 @@ export default function Footer() {
 
         {/* Bottom copyright row */}
         <div className="pt-8 border-t border-gold-primary/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-400">
-          <span>&copy; {currentYear} Mahira Developers. All Rights Reserved.</span>
+          <span>&copy; {currentYear} mahiradevelopers.in. All Rights Reserved.</span>
           <div className="flex gap-6">
             <Link href="/terms" className="hover:text-gold-primary transition-colors">
               Terms & Conditions
