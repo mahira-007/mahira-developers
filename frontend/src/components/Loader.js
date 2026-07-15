@@ -9,14 +9,17 @@ export default function Loader() {
   useEffect(() => {
     const handleLoad = () => setLoading(false);
     
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 1500);
+    let timer;
 
     if (document.readyState === "complete") {
-      setLoading(false);
+      timer = setTimeout(() => {
+        setLoading(false);
+      }, 0);
     } else {
       window.addEventListener("load", handleLoad);
+      timer = setTimeout(() => {
+        setLoading(false);
+      }, 1500);
     }
 
     return () => {
