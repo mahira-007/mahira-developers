@@ -3,6 +3,7 @@ import "./globals.css";
 import SmoothScroll from "@/components/SmoothScroll";
 import Loader from "@/components/Loader";
 import CursorSpotlight from "@/components/CursorSpotlight";
+import { Analytics } from "@vercel/analytics/react";
 
 // Body font — clean, neutral, highly legible
 const inter = Inter({
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
           <CursorSpotlight />
           {children}
         </SmoothScroll>
+        <Analytics />
       </body>
     </html>
   );
