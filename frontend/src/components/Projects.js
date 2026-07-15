@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { 
   MapPin, ArrowRight, ShieldCheck, TreePine, Droplet, Zap, 
@@ -8,6 +8,7 @@ import {
   Compass, CheckCircle2, DollarSign, MoveRight, LayoutGrid 
 } from "lucide-react";
 import Link from "next/link";
+import { Motion } from "@motion.page/sdk";
 
 export default function Projects() {
   const [selectedProject, setSelectedProject] = useState(null);
@@ -161,45 +162,46 @@ export default function Projects() {
   };
 
   const shouldReduceMotion = useReducedMotion();
+  const containerRef = useRef(null);
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0.05 : 0.15,
-      },
-    },
-  };
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced || shouldReduceMotion) return;
 
-  const cardVariants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: shouldReduceMotion ? "tween" : "spring",
-        stiffness: 60,
-        damping: 15,
-        duration: shouldReduceMotion ? 0.35 : undefined,
-      },
-    },
-  };
+    const motionInstance = Motion("projects-reveal", ".project-card-reveal", {
+      from: { opacity: 0, y: 45 },
+      to: { opacity: 1, y: 0 },
+      duration: 0.8,
+      ease: "power2.out",
+      stagger: { each: 0.15, from: "start" },
+    }).onScroll({
+      start: "top 80%",
+      scrub: false,
+    });
+
+    return () => {
+      try {
+        motionInstance?.kill();
+      } catch (err) {
+        // Safe fail
+      }
+    };
+  }, [shouldReduceMotion]);
 
   return (
-    <section id="projects" className="py-28 bg-background-alt relative border-t border-slate-100 overflow-hidden">
+    <section id="projects" ref={containerRef} className="py-28 bg-background-alt relative border-t border-white/5 overflow-hidden">
       {/* Background luxury ambient glow */}
       <div className="absolute top-1/3 left-10 w-[450px] h-[450px] rounded-full bg-gold-primary/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-10 w-[550px] h-[550px] rounded-full bg-navy-royal/5 blur-[150px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="section-container">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-3 block">
             Featured Portfolio
           </span>
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-royal mb-6 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
             Elite Real Estate Developments
           </h2>
           <p className="text-sm md:text-base text-slate-muted max-w-2xl mx-auto leading-relaxed">
@@ -208,32 +210,20 @@ export default function Projects() {
           <div className="h-0.5 w-20 bg-gradient-to-r from-transparent via-gold-primary to-transparent mx-auto mt-6" />
         </div>
 
-        {/* Projects Grid (Responsive: 3 columns desktop, 2 tablet, 1 mobile) */}
-        <motion.div
-          variants={containerVariants}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10"
-        >
-          {projects.map((project) => {
+        {/* Projects Grid (Bento Grid layout on large screens) */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 lg:gap-10">
+          {projects.map((project, idx) => {
             const displayMedia = project.media[0];
+            const colSpan = idx === 0 || idx === 3 ? "lg:col-span-7 md:col-span-2" : "lg:col-span-5 md:col-span-2";
             return (
               <motion.div
                 key={project.id}
-                variants={cardVariants}
-                whileHover={shouldReduceMotion ? {
-                  boxShadow: "0 10px 25px rgba(0, 0, 0, 0.05)",
-                } : { 
-                  y: -8,
-                  boxShadow: "0 20px 40px rgba(197, 168, 93, 0.12)",
-                  borderColor: "rgba(197, 168, 93, 0.4)"
-                }}
-                className="group rounded-2xl border border-slate-200 bg-white p-5 flex flex-col justify-between transition-all duration-300 hover:shadow-2xl"
+                whileHover={shouldReduceMotion ? {} : { y: -8 }}
+                className={`project-card-reveal group rounded-2xl border border-white/10 bg-background-alt/80 p-6 flex flex-col justify-between transition-all duration-300 hover:shadow-[0_20px_40px_rgba(197,168,93,0.12)] hover:border-gold-primary/30 ${colSpan}`}
               >
                 <div>
                   {/* Image wrapper with Hover Zoom */}
-                  <div className="relative w-full h-56 rounded-xl overflow-hidden mb-5 border border-slate-100 bg-slate-50 flex items-center justify-center shadow-inner">
+                  <div className="relative w-full h-56 rounded-xl overflow-hidden mb-5 border border-white/5 bg-background-alt flex items-center justify-center shadow-inner">
                     {displayMedia.type === "video" ? (
                       <video
                         src={displayMedia.src}
@@ -253,7 +243,7 @@ export default function Projects() {
                     )}
 
                     {/* Status & Approval Badges overlay */}
-                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded text-[8px] font-bold uppercase tracking-wider bg-white/95 border border-gold-primary/20 text-navy-royal shadow-sm backdrop-blur-sm">
+                    <span className="absolute top-3 left-3 px-2.5 py-1 rounded text-[8px] font-bold uppercase tracking-wider bg-[#040814]/95 border border-gold-primary/20 text-white shadow-sm backdrop-blur-sm">
                       {project.approval}
                     </span>
                     <span className={`absolute top-3 right-3 px-3 py-1 rounded-full text-[9px] font-extrabold uppercase tracking-wider border shadow-sm backdrop-blur-sm ${project.badgeColor}`}>
@@ -272,7 +262,7 @@ export default function Projects() {
                     <span>{project.location}</span>
                   </div>
 
-                  <h3 className="text-lg sm:text-xl font-extrabold text-navy-royal mb-1 group-hover:text-gold-primary transition-colors text-left tracking-tight">
+                  <h3 className="text-lg sm:text-xl font-extrabold text-white mb-1 group-hover:text-gold-primary transition-colors text-left tracking-tight">
                     {project.title}
                   </h3>
 
@@ -281,14 +271,14 @@ export default function Projects() {
                   </span>
 
                   {/* Plot specifications */}
-                  <div className="grid grid-cols-2 gap-4 py-3 px-4 rounded-xl bg-slate-50 border border-slate-100 mb-5 text-left">
+                  <div className="grid grid-cols-2 gap-4 py-3 px-4 rounded-xl bg-background-alt border border-white/5 mb-5 text-left">
                     <div>
                       <div className="text-[9px] font-bold uppercase tracking-wider text-slate-muted">Starting Price</div>
-                      <div className="text-sm font-extrabold text-navy-royal">{project.price}</div>
+                      <div className="text-sm font-extrabold text-white">{project.price}</div>
                     </div>
                     <div>
                       <div className="text-[9px] font-bold uppercase tracking-wider text-slate-muted">Plot Sizes</div>
-                      <div className="text-sm font-extrabold text-navy-royal">{project.sizes}</div>
+                      <div className="text-sm font-extrabold text-white">{project.sizes}</div>
                     </div>
                   </div>
 
@@ -299,10 +289,10 @@ export default function Projects() {
                 </div>
 
                 {/* Bottom Card Actions */}
-                <div className="pt-4 border-t border-slate-100 flex items-center justify-between gap-3">
+                <div className="pt-4 border-t border-white/5 flex items-center justify-between gap-3">
                   <button
                     onClick={() => openDetails(project)}
-                    className="flex-1 inline-flex items-center justify-center px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg border border-slate-200 hover:border-gold-primary hover:bg-gold-primary/5 hover:text-gold-primary transition-all duration-200 cursor-pointer font-sans"
+                    className="flex-1 inline-flex items-center justify-center px-4 py-2.5 text-[10px] font-bold uppercase tracking-widest rounded-lg border border-white/10 hover:border-gold-primary hover:bg-gold-primary/5 text-white hover:text-gold-primary transition-all duration-200 cursor-pointer font-sans"
                   >
                     View Details
                   </button>
@@ -317,7 +307,7 @@ export default function Projects() {
               </motion.div>
             );
           })}
-        </motion.div>
+        </div>
 
       </div>
 
@@ -340,7 +330,7 @@ export default function Projects() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 30 }}
               transition={{ type: "spring", duration: 0.6 }}
-              className="relative w-full max-w-4xl bg-white rounded-3xl border border-slate-200 shadow-2xl z-10 text-left overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
+              className="relative w-full max-w-4xl bg-background-alt rounded-3xl border border-white/5 shadow-2xl z-10 text-left overflow-hidden flex flex-col md:flex-row max-h-[90vh]"
             >
               {/* Top decoration strip */}
               <div className="absolute top-0 left-0 right-0 h-[4px] bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark z-30" />
@@ -412,7 +402,7 @@ export default function Projects() {
                   <span className="text-[10px] font-extrabold uppercase tracking-widest text-gold-primary mb-1.5 block">
                     {selectedProject.approval}
                   </span>
-                  <h3 className="text-2xl font-black text-navy-royal mb-2 tracking-tight leading-tight">
+                  <h3 className="text-2xl font-black text-white mb-2 tracking-tight leading-tight">
                     {selectedProject.title}
                   </h3>
                   <div className="flex items-center gap-1.5 text-slate-muted text-xs font-bold uppercase tracking-wider mb-5">
@@ -421,26 +411,26 @@ export default function Projects() {
                   </div>
 
                   {/* Pricing and plot specifications */}
-                  <div className="grid grid-cols-2 gap-4 py-4 px-5 rounded-2xl bg-slate-50 border border-slate-200/60 mb-6">
+                  <div className="grid grid-cols-2 gap-4 py-4 px-5 rounded-2xl bg-background border border-white/5 mb-6">
                     <div>
                       <div className="text-[9px] font-bold uppercase tracking-widest text-slate-muted">Starting Price</div>
-                      <div className="text-base font-extrabold text-navy-royal">{selectedProject.price}</div>
+                      <div className="text-base font-extrabold text-white">{selectedProject.price}</div>
                     </div>
                     <div>
                       <div className="text-[9px] font-bold uppercase tracking-widest text-slate-muted">Dimensions</div>
-                      <div className="text-base font-extrabold text-navy-royal">{selectedProject.sizes}</div>
+                      <div className="text-base font-extrabold text-white">{selectedProject.sizes}</div>
                     </div>
                   </div>
 
                   {/* Plot Availability Progress Bar */}
                   <div className="mb-6">
                     <div className="flex justify-between text-xs font-bold mb-2">
-                      <span className="text-navy-royal uppercase tracking-wider text-[10px]">Development Progress</span>
+                      <span className="text-white uppercase tracking-wider text-[10px]">Development Progress</span>
                       <span className="text-gold-primary">
                         {selectedProject.availability.sold} / {selectedProject.availability.total} Plots Booked
                       </span>
                     </div>
-                    <div className="w-full h-2 rounded-full bg-slate-100 overflow-hidden border border-slate-200/50">
+                    <div className="w-full h-2 rounded-full bg-background overflow-hidden border border-white/5">
                       <motion.div
                         initial={{ width: 0 }}
                         animate={{ width: `${(selectedProject.availability.sold / selectedProject.availability.total) * 100}%` }}
@@ -457,7 +447,7 @@ export default function Projects() {
 
                   {/* Amenities Grid */}
                   <div className="mb-6">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-navy-royal mb-3 border-b border-slate-100 pb-1.5">
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-white mb-3 border-b border-white/5 pb-1.5">
                       Premium Amenities
                     </h4>
                     <div className="grid grid-cols-2 gap-3">
@@ -477,7 +467,7 @@ export default function Projects() {
 
                   {/* Nearby Hotspots */}
                   <div className="mb-8">
-                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-navy-royal mb-3 border-b border-slate-100 pb-1.5">
+                    <h4 className="text-[10px] font-bold uppercase tracking-widest text-white mb-3 border-b border-white/5 pb-1.5">
                       Nearby Attractions & Reach
                     </h4>
                     <div className="flex flex-col gap-3">
@@ -485,11 +475,11 @@ export default function Projects() {
                         const Icon = hotspot.icon;
                         return (
                           <div key={idx} className="flex items-start gap-2.5 text-xs text-slate-muted">
-                            <div className="w-6 h-6 rounded-md bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                            <div className="w-6 h-6 rounded-md bg-background flex items-center justify-center text-slate-400 shrink-0 border border-white/5">
                               <Icon className="w-3.5 h-3.5" />
                             </div>
                             <div>
-                              <strong className="text-navy-royal font-bold text-[10px] uppercase block tracking-wider leading-none mb-0.5">{hotspot.label}</strong>
+                              <strong className="text-white font-bold text-[10px] uppercase block tracking-wider leading-none mb-0.5">{hotspot.label}</strong>
                               <span className="text-[11px] leading-tight text-slate-light block">{hotspot.text}</span>
                             </div>
                           </div>
@@ -503,7 +493,7 @@ export default function Projects() {
                     <Link
                       href={`/project/${selectedProject.id}`}
                       onClick={() => setSelectedProject(null)}
-                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 text-[10px] font-bold uppercase tracking-widest rounded-xl bg-navy-royal text-gold-primary border border-gold-primary/20 hover:bg-gold-primary/10 transition-all cursor-pointer font-sans shadow-md"
+                      className="w-full inline-flex items-center justify-center gap-2 px-5 py-3.5 text-[10px] font-bold uppercase tracking-widest rounded-xl bg-background text-gold-primary border border-gold-primary/20 hover:bg-gold-primary/10 transition-all cursor-pointer font-sans shadow-md"
                     >
                       <LayoutGrid className="w-4 h-4" />
                       View Interactive Plot Layout
@@ -512,10 +502,10 @@ export default function Projects() {
                 </div>
 
                 {/* Actions bottom drawer */}
-                <div className="pt-5 border-t border-slate-100 flex flex-col sm:flex-row gap-3 items-center">
+                <div className="pt-5 border-t border-white/5 flex flex-col sm:flex-row gap-3 items-center">
                   <button
                     onClick={() => handleDownloadBrochure(selectedProject.title, selectedProject.media[selectedProject.media.length - 1].src)}
-                    className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-widest rounded-xl border border-slate-200 hover:border-gold-primary hover:text-gold-primary transition-all duration-200 cursor-pointer font-sans"
+                    className="w-full sm:flex-1 inline-flex items-center justify-center gap-2 px-5 py-3 text-xs font-bold uppercase tracking-widest rounded-xl border border-white/10 hover:border-gold-primary text-white hover:text-gold-primary transition-all duration-200 cursor-pointer font-sans"
                     disabled={brochureStatus === "downloading"}
                   >
                     <Download className="w-3.5 h-3.5" />

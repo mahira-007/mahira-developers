@@ -29,7 +29,7 @@ export default function ContactForm() {
   };
 
   return (
-    <section id="contact" className="py-28 bg-white relative overflow-hidden border-t border-slate-100">
+    <section id="contact" className="py-28 bg-background relative overflow-hidden border-t border-white/5">
       {/* Background shape */}
       <div className="absolute bottom-0 right-0 w-[500px] h-[500px] rounded-full bg-gradient-to-br from-gold-primary/5 to-transparent blur-[120px] translate-x-1/3 translate-y-1/3 pointer-events-none" />
 
@@ -42,7 +42,7 @@ export default function ContactForm() {
               <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-3 block">
                 Contact Office
               </span>
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-royal mb-6 tracking-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
                 Start Building Your Future Today
               </h2>
               <p className="text-base text-slate-muted mb-10 leading-relaxed">
@@ -61,16 +61,16 @@ export default function ContactForm() {
                   <a
                     key={idx}
                     href={item.href}
-                    className="flex items-center gap-4 p-5 rounded-2xl border border-slate-200 bg-background-alt hover:border-gold-primary/30 hover:bg-white transition-all duration-300 hover:shadow-xl hover:shadow-gold-primary/5 group overflow-hidden"
+                    className="flex items-center gap-4 p-5 rounded-2xl border border-white/5 bg-background-alt/50 hover:border-gold-primary/30 hover:bg-background-alt/85 transition-all duration-300 hover:shadow-xl hover:shadow-gold-primary/5 group overflow-hidden"
                   >
-                    <div className="w-10 h-10 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-primary shadow-inner group-hover:bg-gold-primary group-hover:text-white transition-colors duration-300 shrink-0">
+                    <div className="w-10 h-10 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-primary shadow-inner group-hover:bg-gold-primary group-hover:text-navy-royal transition-colors duration-300 shrink-0">
                       <Icon className="w-5 h-5" />
                     </div>
                     <div className="min-w-0 flex-1">
                       <div className="text-[10px] uppercase font-bold tracking-widest text-slate-muted">
                         {item.label}
                       </div>
-                      <div className="text-sm font-extrabold text-navy-royal break-all">
+                      <div className="text-sm font-extrabold text-white break-all">
                         {item.value}
                       </div>
                     </div>
@@ -82,7 +82,7 @@ export default function ContactForm() {
 
           {/* Right Column: Form Container */}
           <div className="lg:col-span-7 w-full text-left">
-            <div className="p-8 md:p-12 rounded-2xl border border-slate-200/80 bg-white shadow-2xl relative">
+            <div className="p-8 md:p-12 rounded-2xl border border-white/5 bg-background-alt/65 shadow-2xl relative backdrop-blur-xl">
               <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark rounded-t-2xl" />
 
               <AnimatePresence mode="wait">
@@ -93,10 +93,10 @@ export default function ContactForm() {
                     exit={{ opacity: 0 }}
                     className="flex flex-col items-center justify-center text-center py-16"
                   >
-                    <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-6">
+                    <div className="w-16 h-16 rounded-full bg-emerald-950/20 border border-emerald-900/30 flex items-center justify-center text-emerald-500 mb-6">
                       <CheckCircle className="w-10 h-10" />
                     </div>
-                    <h3 className="text-xl font-bold text-navy-royal mb-2">
+                    <h3 className="text-xl font-bold text-white mb-2">
                       Inquiry Submitted!
                     </h3>
                     <p className="text-sm text-slate-muted max-w-sm">
@@ -132,7 +132,7 @@ export default function ContactForm() {
                         value={formState.name}
                         onChange={handleChange}
                         placeholder="Enter your full name"
-                        className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm"
+                        className="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm"
                       />
                     </div>
 
@@ -151,7 +151,7 @@ export default function ContactForm() {
                         value={formState.email}
                         onChange={handleChange}
                         placeholder="name@example.com"
-                        className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm"
+                        className="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm"
                       />
                     </div>
 
@@ -168,7 +168,7 @@ export default function ContactForm() {
                           id="project"
                           value={formState.project}
                           onChange={handleChange}
-                          className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm cursor-pointer appearance-none"
+                          className="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-background/45 text-foreground focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm cursor-pointer appearance-none [&>option]:bg-background-alt"
                         >
                           <option value="General Inquiry">General Inquiry</option>
                           <option value="Premium Residential Space in Arani">Premium Residential Space (Arani)</option>
@@ -199,7 +199,7 @@ export default function ContactForm() {
                         value={formState.message}
                         onChange={handleChange}
                         placeholder="Tell us about your requirements (e.g. plot size, budget, time to visit)..."
-                        className="w-full px-4 py-3.5 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm resize-none"
+                        className="w-full px-4 py-3.5 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm resize-none"
                       />
                     </div>
 
@@ -237,4 +237,3 @@ export default function ContactForm() {
     </section>
   );
 }
-

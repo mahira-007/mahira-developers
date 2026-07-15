@@ -29,11 +29,11 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="bg-navy-royal border-t border-gold-primary/20 py-16 text-left text-white relative overflow-hidden">
+    <footer className="section-y bg-navy-royal border-t border-gold-primary/20 text-left text-white relative overflow-hidden">
       {/* Subtle background glow */}
       <div className="absolute bottom-0 right-0 w-[300px] h-[300px] rounded-full bg-gold-primary/5 blur-[100px] pointer-events-none" />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10">
+      <div className="section-container">
         <div className="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-12 pb-12">
           
           {/* Logo and Contact Details Column */}

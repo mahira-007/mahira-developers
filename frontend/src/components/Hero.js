@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { motion, useInView, useSpring, useReducedMotion } from "framer-motion";
+import { motion, useSpring, useReducedMotion } from "framer-motion";
 import { ArrowRight, Check, Award } from "lucide-react";
+import gsap from "gsap";
+import { Motion } from "@motion.page/sdk";
 
 // Canvas-based particles system for high performance (60 FPS) floating orbs
 function CanvasParticles() {
@@ -19,66 +21,46 @@ function CanvasParticles() {
     let height = (canvas.height = canvas.offsetHeight);
 
     const particles = [];
-    const particleCount = 35; // optimal count to avoid clutter
+    const particleCount = 35;
 
     class Particle {
       constructor() {
         this.reset();
-        this.y = Math.random() * height; // initial scatter
+        this.y = Math.random() * height;
       }
 
       reset() {
         this.x = Math.random() * width;
         this.y = height + 10;
         this.size = Math.random() * 2.5 + 0.6;
-        this.speedY = Math.random() * 0.4 + 0.15; // slow vertical drift
-        this.speedX = Math.sin(Math.random() * Math.PI) * 0.15; // gentle side sway
+        this.speedY = Math.random() * 0.4 + 0.15;
+        this.speedX = Math.sin(Math.random() * Math.PI) * 0.15;
         this.opacity = Math.random() * 0.35 + 0.1;
         this.fadeSpeed = Math.random() * 0.004 + 0.002;
         this.maxOpacity = this.opacity;
-        this.currentOpacity = 0; // start transparent and fade in
+        this.currentOpacity = 0;
       }
 
       update() {
         this.y -= this.speedY;
         this.x += this.speedX;
-
-        // Fade-in on spawn
-        if (this.currentOpacity < this.maxOpacity) {
-          this.currentOpacity += 0.01;
-        }
-
-        // Fade-out as it approaches the top
-        if (this.y < 120) {
-          this.currentOpacity -= this.fadeSpeed;
-        }
-
-        // Reset if goes off-screen
-        if (this.y < 0 || this.currentOpacity <= 0 || this.x < 0 || this.x > width) {
-          this.reset();
-        }
+        if (this.currentOpacity < this.maxOpacity) this.currentOpacity += 0.01;
+        if (this.y < 120) this.currentOpacity -= this.fadeSpeed;
+        if (this.y < 0 || this.currentOpacity <= 0 || this.x < 0 || this.x > width) this.reset();
       }
 
       draw() {
         ctx.beginPath();
-        // Create radial gradient for realistic soft glow
-        const gradient = ctx.createRadialGradient(
-          this.x, this.y, 0,
-          this.x, this.y, this.size * 2
-        );
-        gradient.addColorStop(0, `rgba(197, 168, 93, ${this.currentOpacity})`); // gold-primary
+        const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size * 2);
+        gradient.addColorStop(0, `rgba(197, 168, 93, ${this.currentOpacity})`);
         gradient.addColorStop(1, "rgba(197, 168, 93, 0)");
-
         ctx.fillStyle = gradient;
         ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
         ctx.fill();
       }
     }
 
-    // Initialize particles array
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(new Particle());
-    }
+    for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
     const handleResize = () => {
       if (!canvas) return;
@@ -89,13 +71,9 @@ function CanvasParticles() {
 
     const animate = () => {
       ctx.clearRect(0, 0, width, height);
-      particles.forEach((p) => {
-        p.update();
-        p.draw();
-      });
+      particles.forEach((p) => { p.update(); p.draw(); });
       animationFrameId = requestAnimationFrame(animate);
     };
-
     animate();
 
     return () => {
@@ -117,39 +95,41 @@ function CanvasParticles() {
 function CountUp({ to, suffix = "", prefix = "" }) {
   const [count, setCount] = useState(0);
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-50px" });
 
   useEffect(() => {
-    if (!isInView) return;
+    // Use IntersectionObserver for CountUp trigger
+    const el = ref.current;
+    if (!el) return;
 
-    let start = 0;
-    const end = parseInt(to, 10);
-    if (isNaN(end)) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        observer.disconnect();
 
-    const duration = 2500;
-    let startTime = null;
+        const end = parseInt(to, 10);
+        if (isNaN(end)) return;
+        const duration = 2500;
+        let startTime = null;
 
-    const animate = (timestamp) => {
-      if (!startTime) startTime = timestamp;
-      const progress = Math.min((timestamp - startTime) / duration, 1);
-      const easeProgress = progress * (2 - progress); // Ease out quad
-      setCount(Math.floor(easeProgress * end));
-
-      if (progress < 1) {
+        const animate = (timestamp) => {
+          if (!startTime) startTime = timestamp;
+          const progress = Math.min((timestamp - startTime) / duration, 1);
+          const easeProgress = progress * (2 - progress);
+          setCount(Math.floor(easeProgress * end));
+          if (progress < 1) window.requestAnimationFrame(animate);
+          else setCount(end);
+        };
         window.requestAnimationFrame(animate);
-      } else {
-        setCount(end);
-      }
-    };
-
-    window.requestAnimationFrame(animate);
-  }, [isInView, to]);
+      },
+      { threshold: 0.5 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [to]);
 
   return (
     <span ref={ref} className="tabular-nums">
-      {prefix}
-      {count.toLocaleString()}
-      {suffix}
+      {prefix}{count.toLocaleString()}{suffix}
     </span>
   );
 }
@@ -160,25 +140,81 @@ export default function Hero() {
   const parallaxX = useSpring(0, { stiffness: 40, damping: 15 });
   const parallaxY = useSpring(0, { stiffness: 40, damping: 15 });
 
-  // Handle Parallax Mouse coordinates (disabled if reduced motion is preferred)
+  // Refs for GSAP targets
+  const heroRef      = useRef(null);
+  const badgeRef     = useRef(null);
+  const titleRef     = useRef(null);
+  const subtitleRef  = useRef(null);
+  const ctaRef       = useRef(null);
+  const statsRef     = useRef(null);
+
+  // Mouse parallax for background image
   useEffect(() => {
     if (shouldReduceMotion) return;
-    
     const handleMouseMove = (e) => {
-      const x = (e.clientX / window.innerWidth) - 0.5;
-      const y = (e.clientY / window.innerHeight) - 0.5;
-      setMousePos({ x, y });
+      parallaxX.set(((e.clientX / window.innerWidth) - 0.5) * -30);
+      parallaxY.set(((e.clientY / window.innerHeight) - 0.5) * -30);
     };
     window.addEventListener("mousemove", handleMouseMove);
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [shouldReduceMotion]);
+  }, [shouldReduceMotion, parallaxX, parallaxY]);
 
-  // Update Springs smoothly when mousePos changes
+  // ── Motion Page SDK Hero entry timeline ───────────────────────────────────────────
   useEffect(() => {
-    if (shouldReduceMotion) return;
-    parallaxX.set(mousePos.x * -30); // max 30px offset
-    parallaxY.set(mousePos.y * -30);
-  }, [mousePos, parallaxX, parallaxY, shouldReduceMotion]);
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced || shouldReduceMotion) return;
+
+    // Use Motion Page SDK to build a sequenced entry animation
+    const motionInstance = Motion("hero-entry-sequence", [
+      {
+        target: badgeRef.current,
+        from: { opacity: 0, y: 30 },
+        to: { opacity: 1, y: 0 },
+        duration: 0.8,
+        ease: "power2.out",
+      },
+      {
+        target: titleRef.current,
+        from: { opacity: 0, y: 30 },
+        to: { opacity: 1, y: 0 },
+        duration: 0.8,
+        ease: "power2.out",
+        position: "-=0.55",
+      },
+      {
+        target: subtitleRef.current,
+        from: { opacity: 0, y: 30 },
+        to: { opacity: 1, y: 0 },
+        duration: 0.8,
+        ease: "power2.out",
+        position: "-=0.55",
+      },
+      {
+        target: ctaRef.current,
+        from: { opacity: 0, y: 30 },
+        to: { opacity: 1, y: 0 },
+        duration: 0.8,
+        ease: "power2.out",
+        position: "-=0.55",
+      },
+      {
+        target: statsRef.current,
+        from: { opacity: 0, y: 30 },
+        to: { opacity: 1, y: 0 },
+        duration: 0.8,
+        ease: "power2.out",
+        position: "-=0.55",
+      }
+    ]).onPageLoad();
+
+    return () => {
+      try {
+        motionInstance?.kill();
+      } catch (err) {
+        // Safe fail
+      }
+    };
+  }, [shouldReduceMotion]);
 
   const triggerInquiry = (e) => {
     e?.preventDefault();
@@ -186,47 +222,19 @@ export default function Hero() {
     window.dispatchEvent(event);
   };
 
-  // Words list for stagger animations
-  const line1Words = "Build Your Dream.".split(" ");
-  const line2Words = "Own Your Future.".split(" ");
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: shouldReduceMotion ? 0.05 : 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const wordVariants = {
-    hidden: { opacity: 0, y: shouldReduceMotion ? 0 : 25 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        type: shouldReduceMotion ? "tween" : "spring",
-        stiffness: 90,
-        damping: 12,
-        duration: shouldReduceMotion ? 0.35 : undefined,
-      },
-    },
-  };
-
   const stats = [
     { label: "Happy Families", value: "1200", suffix: "+" },
-    { label: "Plots Sold", value: "850", suffix: "+" },
-    { label: "Years of Trust", value: "15", suffix: "+" },
+    { label: "Plots Sold",     value: "850",  suffix: "+" },
+    { label: "Years of Trust", value: "15",   suffix: "+" },
   ];
 
   return (
     <section
       id="home"
+      ref={heroRef}
       className="relative h-screen min-h-[720px] flex items-center justify-center overflow-hidden bg-navy-royal"
     >
-      {/* Background image container with Ken Burns loop and mouse parallax */}
+      {/* Background image — Ken Burns + mouse parallax (Framer Motion springs) */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat pointer-events-none"
         style={{
@@ -238,121 +246,100 @@ export default function Hero() {
         transition={shouldReduceMotion ? { duration: 0.1 } : { duration: 25, ease: "easeInOut", repeat: Infinity }}
       />
 
-      {/* Drifting gradient overlay (slow changing) */}
+      {/* Drifting gradient overlay */}
       <div className="absolute inset-0 bg-gradient-to-tr from-navy-royal via-navy-light/95 to-navy-royal/90 z-0 pointer-events-none animate-gradient-drift" />
 
-      {/* Canvas Particles Component (disabled if reduced motion is preferred) */}
+      {/* Canvas Particles */}
       {!shouldReduceMotion && <CanvasParticles />}
 
-      {/* Soft golden gradient backdrop behind headings */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[480px] sm:h-[480px] rounded-full bg-gold-primary/15 blur-[110px] sm:blur-[140px] pointer-events-none z-0 animate-pulse" style={{ animationDuration: '6s' }} />
+      {/* Soft golden backdrop */}
+      <div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[350px] sm:w-[480px] sm:h-[480px] rounded-full bg-gold-primary/15 blur-[110px] sm:blur-[140px] pointer-events-none z-0 animate-pulse"
+        style={{ animationDuration: "6s" }}
+      />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-20 w-full flex flex-col justify-between h-full pt-32 pb-12">
-        
-        {/* Main Content Area */}
+      <div
+        className="section-container w-full flex flex-col justify-between h-full pt-32 pb-12"
+        style={{ zIndex: 20 }}
+      >
+        {/* ── Main content ─────────────────────────────────────── */}
         <div className="flex-1 flex items-center justify-center">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="text-center max-w-4xl mx-auto flex flex-col items-center"
-          >
-            {/* Elegant Luxury Badge */}
-            <motion.div
-              variants={wordVariants}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-extrabold bg-navy-royal/90 text-gold-light border border-gold-primary/30 mb-8 backdrop-blur-md shadow-lg"
+          <div className="text-center max-w-4xl mx-auto flex flex-col items-center">
+
+            {/* Badge */}
+            <div
+              ref={badgeRef}
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[10px] uppercase tracking-widest font-extrabold bg-navy-royal/90 text-gold-light border border-gold-primary/30 mb-8 backdrop-blur-md shadow-lg cursor-default"
+              style={{ opacity: 0 }}
             >
               <Award className="w-3.5 h-3.5 text-gold-primary animate-pulse" />
-              <span>Mahira Developers &bull; Signature Living</span>
-            </motion.div>
+              <span>Mehra Developers</span>
+            </div>
 
-            {/* Premium Staggered Title (Word by Word) */}
-            <motion.h1
-              className="text-4xl sm:text-5xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-white mb-8 select-none"
+            {/* Heading */}
+            <h1
+              ref={titleRef}
+              className="text-4xl sm:text-6xl md:text-8xl font-extrabold tracking-tight leading-[1.1] text-white mb-8 select-none"
+              style={{ opacity: 0 }}
             >
-              <span className="block mb-2 overflow-hidden py-1">
-                {line1Words.map((word, i) => (
-                  <motion.span
-                    key={i}
-                    variants={wordVariants}
-                    className="inline-block mr-3 md:mr-4 last:mr-0"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
+              We Build Next-Gen
+              <span className="luxury-text-gold font-black block mt-2">
+                Digital Experiences
               </span>
-              <span className="luxury-text-gold font-black block overflow-hidden py-1">
-                {line2Words.map((word, i) => (
-                  <motion.span
-                    key={i}
-                    variants={wordVariants}
-                    className="inline-block mr-3 md:mr-4 last:mr-0"
-                  >
-                    {word}
-                  </motion.span>
-                ))}
-              </span>
-            </motion.h1>
+            </h1>
 
             {/* Subtitle */}
-            <motion.p
-              variants={wordVariants}
+            <p
+              ref={subtitleRef}
               className="text-base sm:text-lg md:text-xl text-slate-300 max-w-2xl mb-10 leading-relaxed font-normal"
+              style={{ opacity: 0 }}
             >
-              Premium residential plots in fast-growing locations with clear legal documentation and trusted service.
-            </motion.p>
+              Designing, engineering, and launching state-of-the-art software, creative interfaces, and web applications that power digital evolution.
+            </p>
 
-            {/* CTA Buttons with Glowing Animations */}
-            <motion.div
-              variants={wordVariants}
+            {/* CTA Buttons — Framer Motion hover/tap states preserved */}
+            <div
+              ref={ctaRef}
               className="flex flex-col sm:flex-row gap-5 w-full sm:w-auto justify-center"
+              style={{ opacity: 0 }}
             >
               <motion.a
-                href="#projects"
-                whileHover={shouldReduceMotion ? {
-                  scale: 1.01,
-                } : { 
-                  scale: 1.04, 
+                href="#contact"
+                whileHover={shouldReduceMotion ? { scale: 1.01 } : {
+                  scale: 1.04,
                   boxShadow: "0 0 25px rgba(197, 168, 93, 0.45)",
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center justify-center px-8 py-4 text-xs font-bold uppercase tracking-widest rounded-xl bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark text-navy-royal hover:from-gold-light hover:to-gold-primary transition-all duration-300 shadow-xl shadow-gold-primary/10 gap-2 cursor-pointer"
               >
-                View Projects
+                Get Started
                 <ArrowRight className="w-4 h-4" />
               </motion.a>
-              
-              <motion.button
-                onClick={triggerInquiry}
-                whileHover={shouldReduceMotion ? {
-                  backgroundColor: "rgba(255, 255, 255, 0.05)",
-                } : { 
-                  scale: 1.04, 
+ 
+              <motion.a
+                href="#projects"
+                whileHover={shouldReduceMotion ? { backgroundColor: "rgba(255, 255, 255, 0.05)" } : {
+                  scale: 1.04,
                   boxShadow: "0 0 25px rgba(197, 168, 93, 0.25)",
                   backgroundColor: "rgba(255, 255, 255, 0.1)",
-                  transition: { duration: 0.2 }
+                  transition: { duration: 0.2 },
                 }}
                 whileTap={{ scale: 0.98 }}
                 className="inline-flex items-center justify-center px-8 py-4 text-xs font-bold uppercase tracking-widest rounded-xl bg-white/5 border border-gold-primary/50 text-white hover:border-gold-light transition-all duration-300 cursor-pointer"
               >
-                Contact Us
-              </motion.button>
-            </motion.div>
-          </motion.div>
+                Our Work
+              </motion.a>
+            </div>
+          </div>
         </div>
 
-        {/* Counter & Stats Overlay Bar at the bottom */}
-        <motion.div
-          initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 55 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.8, type: "spring" }}
-          className="w-full mt-auto"
-        >
+        {/* ── Stats bar ─────────────────────────────────────────── */}
+        <div ref={statsRef} className="w-full mt-auto" style={{ opacity: 0 }}>
           <div className="glass-card-dark rounded-2xl p-6 md:p-8 max-w-4xl mx-auto shadow-2xl relative overflow-hidden backdrop-blur-xl">
-            {/* Decorative soft gold border line on top */}
+            {/* Gold top-border accent */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-gold-primary to-transparent" />
-            
+
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-4 divide-y sm:divide-y-0 sm:divide-x divide-gold-primary/15 items-center justify-center">
               {stats.map((stat, idx) => (
                 <div
@@ -374,10 +361,10 @@ export default function Hero() {
               ))}
             </div>
           </div>
-        </motion.div>
+        </div>
       </div>
 
-      {/* Bouncing Scroll-down Indicator */}
+      {/* Scroll-down indicator — Framer Motion loop animation preserved */}
       <div className="absolute bottom-8 left-1/2 z-20">
         <motion.a
           href="#projects"
@@ -405,4 +392,3 @@ export default function Hero() {
     </section>
   );
 }
-

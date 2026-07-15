@@ -38,13 +38,17 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      style={{
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)"
+      }}
+      className={`sticky top-0 z-50 transition-all duration-500 border-b border-white/5 ${
         scrolled
-          ? "bg-navy-royal/95 backdrop-blur-md border-b border-gold-primary/25 shadow-lg py-3.5"
-          : "bg-transparent border-b border-white/10 py-5"
+          ? "bg-background/80 shadow-lg shadow-gold-primary/5 py-3.5"
+          : "bg-transparent py-5"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 md:px-12 flex items-center justify-between">
+      <div className="section-container flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-3 group py-1">
           <img

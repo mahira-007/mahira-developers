@@ -69,7 +69,7 @@ export default function InquiryModal() {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 20 }}
             transition={{ type: "spring", duration: 0.5 }}
-            className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-slate-200 bg-white p-6 md:p-8 shadow-2xl z-10 text-left"
+            className="relative w-full max-w-lg overflow-hidden rounded-2xl border border-white/5 bg-background-alt p-6 md:p-8 shadow-2xl z-10 text-left backdrop-blur-xl"
           >
             {/* Top decorative gradient bar */}
             <div className="absolute top-0 left-0 right-0 h-[3px] bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark" />
@@ -77,7 +77,7 @@ export default function InquiryModal() {
             {/* Close Button */}
             <button
               onClick={handleClose}
-              className="absolute top-5 right-5 p-1.5 rounded-lg text-slate-muted hover:text-navy-royal hover:bg-slate-100 transition-colors cursor-pointer"
+              className="absolute top-5 right-5 p-1.5 rounded-lg text-slate-muted hover:text-white hover:bg-white/5 transition-colors cursor-pointer"
             >
               <X className="w-5 h-5" />
             </button>
@@ -91,10 +91,10 @@ export default function InquiryModal() {
                   exit={{ opacity: 0 }}
                   className="flex flex-col items-center justify-center text-center py-12"
                 >
-                  <div className="w-16 h-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-6">
+                  <div className="w-16 h-16 rounded-full bg-emerald-950/20 border border-emerald-900/30 flex items-center justify-center text-emerald-500 mb-6">
                     <CheckCircle className="w-10 h-10" />
                   </div>
-                  <h3 className="text-xl font-bold text-navy-royal mb-2">
+                  <h3 className="text-xl font-bold text-white mb-2">
                     Inquiry Received!
                   </h3>
                   <p className="text-sm text-slate-muted max-w-sm mb-6">
@@ -118,7 +118,7 @@ export default function InquiryModal() {
                       <PhoneCall className="w-5 h-5" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-extrabold text-navy-royal leading-tight">
+                      <h3 className="text-lg font-extrabold text-white leading-tight">
                         Book a Consultation
                       </h3>
                       <p className="text-xs text-slate-muted">
@@ -143,7 +143,7 @@ export default function InquiryModal() {
                         value={formState.name}
                         onChange={handleChange}
                         placeholder="Enter your full name"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm"
                       />
                     </div>
 
@@ -162,7 +162,7 @@ export default function InquiryModal() {
                         value={formState.phone}
                         onChange={handleChange}
                         placeholder="Enter 10-digit number"
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm"
                       />
                     </div>
 
@@ -179,7 +179,7 @@ export default function InquiryModal() {
                           id="modal-project"
                           value={formState.project}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm cursor-pointer appearance-none"
+                          className="w-full px-4 py-3 rounded-xl border border-white/10 bg-background/45 text-foreground focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm cursor-pointer appearance-none [&>option]:bg-background-alt"
                         >
                           <option value="General Inquiry">General Inquiry</option>
                           <option value="Premium Residential Space">Premium Residential Space (Arani)</option>
@@ -209,7 +209,7 @@ export default function InquiryModal() {
                         value={formState.message}
                         onChange={handleChange}
                         placeholder="Add details like preferred plot sizes, schedule timing, or general queries..."
-                        className="w-full px-4 py-3 rounded-xl border border-slate-200 bg-slate-50/50 text-navy-royal placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-white transition-all text-sm resize-none"
+                        className="w-full px-4 py-3 rounded-xl border border-white/10 bg-background/45 text-foreground placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-gold-primary/20 focus:border-gold-primary focus:bg-background-alt/90 transition-all text-sm resize-none"
                       />
                     </div>
 

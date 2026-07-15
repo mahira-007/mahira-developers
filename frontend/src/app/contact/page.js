@@ -26,7 +26,7 @@ export default function ContactPage() {
     <>
       <Navbar />
       
-      <main className="flex-1 bg-white">
+      <main className="flex-1 bg-background">
         
         {/* Banner */}
         <section className="relative py-32 bg-navy-royal overflow-hidden">
@@ -54,7 +54,7 @@ export default function ContactPage() {
               initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 25 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
-              className="lg:col-span-5 p-8 border border-slate-200 rounded-3xl bg-slate-50 text-left relative overflow-hidden shadow-inner flex flex-col justify-between"
+              className="lg:col-span-5 p-8 border border-white/5 rounded-3xl bg-background-alt/50 text-left relative overflow-hidden shadow-inner flex flex-col justify-between"
             >
               <div>
                 {/* Brand Header */}
@@ -65,7 +65,7 @@ export default function ContactPage() {
                     className="h-14 w-auto object-contain rounded border border-gold-primary/30"
                   />
                   <div className="flex flex-col">
-                    <span className="text-base font-black tracking-widest text-navy-royal uppercase leading-none">
+                    <span className="text-base font-black tracking-widest text-white uppercase leading-none">
                       MAHIRA<span className="text-gold-primary">.</span>
                     </span>
                     <span className="text-[9px] tracking-widest text-slate-muted font-bold uppercase mt-1">
@@ -102,7 +102,7 @@ export default function ContactPage() {
                   <div className="flex items-start gap-3">
                     <Clock className="w-4.5 h-4.5 text-gold-primary shrink-0" />
                     <span>
-                      <strong className="text-navy-royal block mb-0.5">Office Hours</strong>
+                      <strong className="text-white block mb-0.5">Office Hours</strong>
                       {companyDetails.hours}
                     </span>
                   </div>
@@ -110,7 +110,7 @@ export default function ContactPage() {
               </div>
 
               {/* Action Buttons Drawer */}
-              <div className="flex flex-col gap-3 pt-6 border-t border-slate-200">
+              <div className="flex flex-col gap-3 pt-6 border-t border-white/5">
                 <a
                   href={`tel:${companyDetails.phone}`}
                   className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-gold-primary via-gold-light to-gold-dark text-navy-royal hover:from-gold-light hover:to-gold-primary text-xs font-bold uppercase tracking-widest transition-all cursor-pointer font-sans shadow-md shadow-gold-primary/10 hover:scale-102"
@@ -131,7 +131,7 @@ export default function ContactPage() {
 
                 <a
                   href={`mailto:${companyDetails.email}`}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-300 bg-white hover:border-gold-primary hover:text-gold-primary text-xs font-bold uppercase tracking-widest transition-all cursor-pointer font-sans hover:scale-102"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-background text-white hover:border-gold-primary hover:text-gold-primary hover:bg-gold-primary/10 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer font-sans hover:scale-102"
                 >
                   <Mail className="w-4 h-4" />
                   Email Us
@@ -140,7 +140,7 @@ export default function ContactPage() {
             </motion.div>
 
             {/* Right: Contact Form wrapper */}
-            <div className="lg:col-span-7 rounded-3xl border border-slate-200 overflow-hidden shadow-sm">
+            <div className="lg:col-span-7 rounded-3xl border border-white/5 overflow-hidden shadow-sm">
               <ContactForm />
             </div>
 

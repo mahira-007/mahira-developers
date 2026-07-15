@@ -39,8 +39,8 @@ function AboutCounter({ to, suffix = "", label }) {
   }, [isInView, to]);
 
   return (
-    <div ref={ref} className="text-center p-4 border border-slate-100 rounded-2xl bg-white shadow-sm flex flex-col items-center">
-      <span className="text-3xl sm:text-4xl font-extrabold text-navy-royal tracking-tight mb-2">
+    <div ref={ref} className="text-center p-4 border border-white/5 rounded-2xl bg-background-alt flex flex-col items-center">
+      <span className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-2">
         {count.toLocaleString()}{suffix}
       </span>
       <span className="text-[10px] sm:text-xs font-bold text-gold-primary uppercase tracking-widest text-center">
@@ -115,7 +115,7 @@ export default function AboutPage() {
     <>
       <Navbar />
       
-      <main className="flex-1 bg-white">
+      <main className="flex-1 bg-background">
         
         {/* Banner Section */}
         <section className="relative py-32 bg-navy-royal overflow-hidden">
@@ -136,11 +136,11 @@ export default function AboutPage() {
         {/* Founder message */}
         <section className="py-24 max-w-7xl mx-auto px-6 md:px-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            <div className="lg:col-span-5 bg-slate-50 p-8 rounded-3xl border border-slate-200/60 shadow-inner flex flex-col items-center text-center">
+            <div className="lg:col-span-5 bg-background-alt/60 p-8 rounded-3xl border border-white/5 shadow-inner flex flex-col items-center text-center">
               <div className="w-24 h-24 rounded-full bg-gold-primary/10 flex items-center justify-center text-gold-primary mb-6 shadow-inner">
                 <Users className="w-10 h-10" />
               </div>
-              <h3 className="text-lg font-bold text-navy-royal mb-1">Vinayaga Sundaram</h3>
+              <h3 className="text-lg font-bold text-white mb-1">Vinayaga Sundaram</h3>
               <p className="text-xs font-semibold text-gold-primary uppercase tracking-widest mb-6">Founder & Chairman</p>
               <p className="text-xs text-slate-muted italic max-w-xs leading-relaxed">
                 "Real estate isn't just about selling square feet. It's about securing a family's financial future and building environments where kids thrive."
@@ -151,7 +151,7 @@ export default function AboutPage() {
               <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-2 block">
                 Founder's Address
               </span>
-              <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-royal mb-6 tracking-tight">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-6 tracking-tight">
                 Our Foundation is Built on Legal Integrity
               </h2>
               <p className="text-sm text-slate-light leading-relaxed mb-4">
@@ -160,7 +160,7 @@ export default function AboutPage() {
               <p className="text-sm text-slate-light leading-relaxed mb-6">
                 Our infrastructure standards—from concrete road setups to water connection lines—are engineered for permanence. We choose prime corridors in Tamil Nadu to secure high appreciation yields for our partners. Thank you for making us your trusted real estate developer.
               </p>
-              <div className="h-[1px] w-full bg-slate-100 mb-6" />
+              <div className="h-[1px] w-full bg-white/5 mb-6" />
               <div className="flex gap-8">
                 <AboutCounter to="1200" suffix="+" label="Happy Families" />
                 <AboutCounter to="850" suffix="+" label="Plots Delivered" />
@@ -171,21 +171,21 @@ export default function AboutPage() {
         </section>
 
         {/* Mission Vision Values */}
-        <section className="py-24 bg-background-alt border-t border-b border-slate-100">
+        <section className="py-24 bg-background-alt border-t border-b border-white/5">
           <div className="max-w-7xl mx-auto px-6 md:px-12 text-center">
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-royal mb-12 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-12 tracking-tight">
               Our Mission, Vision, and Values
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {values.map((v, i) => {
                 const Icon = v.icon;
                 return (
-                  <div key={i} className="glass-card bg-white p-8 rounded-2xl border border-slate-200/80 shadow-sm text-left flex flex-col justify-between hover:shadow-lg transition-all duration-300">
+                  <div key={i} className="glass-card bg-background p-8 rounded-2xl border border-white/5 shadow-sm text-left flex flex-col justify-between hover:shadow-lg transition-all duration-300">
                     <div>
                       <div className="w-10 h-10 rounded-lg bg-gold-primary/10 flex items-center justify-center text-gold-primary mb-6 shadow-inner">
                         <Icon className="w-5 h-5" />
                       </div>
-                      <h4 className="text-base font-extrabold text-navy-royal mb-3 uppercase tracking-wider">
+                      <h4 className="text-base font-extrabold text-white mb-3 uppercase tracking-wider">
                         {v.title}
                       </h4>
                       <p className="text-xs text-slate-muted leading-relaxed">
@@ -205,7 +205,7 @@ export default function AboutPage() {
             <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-3 block">
               Our Journey
             </span>
-            <h2 className="text-2xl sm:text-3xl font-extrabold text-navy-royal mb-4 tracking-tight">
+            <h2 className="text-2xl sm:text-3xl font-extrabold text-white mb-4 tracking-tight">
               Development Milestones
             </h2>
             <p className="text-xs text-slate-muted max-w-sm mx-auto">
@@ -227,20 +227,20 @@ export default function AboutPage() {
                 className="mb-12 last:mb-0 pl-8 relative"
               >
                 {/* Timeline Circle */}
-                <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-primary border-2 border-white shadow flex items-center justify-center">
+                <span className="absolute -left-[9px] top-1.5 w-4 h-4 rounded-full bg-gold-primary border-2 border-background-alt shadow flex items-center justify-center">
                   <span className="w-1.5 h-1.5 rounded-full bg-navy-royal" />
                 </span>
                 
                 {/* Year tag for larger screens */}
-                <span className="hidden md:block absolute -left-32 top-0.5 text-right w-24 font-mono text-base font-extrabold text-navy-royal">
+                <span className="hidden md:block absolute -left-32 top-0.5 text-right w-24 font-mono text-base font-extrabold text-white">
                   {m.year}
                 </span>
 
-                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-100 shadow-sm hover:shadow transition-shadow">
+                <div className="bg-background-alt/60 p-6 rounded-2xl border border-white/5 shadow-sm hover:shadow transition-shadow">
                   <span className="inline-block md:hidden font-mono text-xs font-extrabold text-gold-primary mb-1 uppercase">
                     {m.year} &bull; Milestone
                   </span>
-                  <h4 className="text-base font-extrabold text-navy-royal mb-2 tracking-tight">
+                  <h4 className="text-base font-extrabold text-white mb-2 tracking-tight">
                     {m.title}
                   </h4>
                   <p className="text-xs text-slate-muted leading-relaxed">

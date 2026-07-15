@@ -32,7 +32,7 @@ export default function GalleryPage() {
     <>
       <Navbar />
 
-      <main className="flex-1 bg-white">
+      <main className="flex-1 bg-background">
         
         {/* Banner */}
         <section className="relative py-32 bg-navy-royal overflow-hidden">
@@ -51,7 +51,7 @@ export default function GalleryPage() {
         </section>
 
         {/* Media Controls */}
-        <section className="py-12 bg-slate-50 border-b border-slate-100">
+        <section className="py-12 bg-background-alt border-b border-white/5">
           <div className="max-w-7xl mx-auto px-6 md:px-12 flex justify-center gap-4">
             {["all", "images", "videos"].map((f) => (
               <button
@@ -59,8 +59,8 @@ export default function GalleryPage() {
                 onClick={() => setFilter(f)}
                 className={`px-6 py-2.5 rounded-full text-[10px] font-bold uppercase tracking-widest transition-all cursor-pointer ${
                   filter === f
-                    ? "bg-navy-royal text-gold-primary border border-gold-primary/20 shadow-md"
-                    : "bg-white text-slate-muted border border-slate-200 hover:border-gold-primary/45"
+                    ? "bg-background text-gold-primary border border-gold-primary/20 shadow-md"
+                    : "bg-background-alt text-slate-muted border border-white/10 hover:border-gold-primary/45"
                 }`}
               >
                 {f}
@@ -80,7 +80,7 @@ export default function GalleryPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
                 onClick={() => setActiveMedia(item)}
-                className="group relative rounded-2xl overflow-hidden bg-slate-100 border border-slate-200 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300 h-64 md:h-72"
+                className="group relative rounded-2xl overflow-hidden bg-background-alt border border-white/5 cursor-pointer shadow-sm hover:shadow-xl transition-shadow duration-300 h-64 md:h-72"
               >
                 {/* Media backdrop */}
                 {item.type === "video" ? (
@@ -108,7 +108,7 @@ export default function GalleryPage() {
                       className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                     />
                     <div className="absolute inset-0 bg-black/10 group-hover:bg-black/20 transition-all flex items-center justify-center opacity-0 group-hover:opacity-100">
-                      <div className="w-10 h-10 rounded-full bg-white/90 text-navy-royal flex items-center justify-center shadow-md">
+                      <div className="w-10 h-10 rounded-full bg-background/95 text-gold-primary flex items-center justify-center shadow-md border border-white/5">
                         <ZoomIn className="w-4 h-4 text-gold-primary" />
                       </div>
                     </div>

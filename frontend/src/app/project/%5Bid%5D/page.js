@@ -187,7 +187,7 @@ export default function ProjectDetailPage({ params }) {
     <>
       <Navbar />
 
-      <main className="flex-1 bg-white pt-20">
+      <main className="flex-1 bg-background pt-20">
         
         {/* Cinematic Hero Banner */}
         <section className="relative h-[55vh] min-h-[400px] bg-slate-900 overflow-hidden">
@@ -204,7 +204,7 @@ export default function ProjectDetailPage({ params }) {
             />
           </motion.div>
           
-          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-navy-royal/60 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background via-slate-900/60 to-transparent z-10" />
 
           <div className="absolute bottom-10 left-0 right-0 max-w-7xl mx-auto px-6 md:px-12 z-20 text-left text-white flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div>
@@ -234,7 +234,7 @@ export default function ProjectDetailPage({ params }) {
         </section>
 
         {/* Dynamic Detail grid */}
-        <section className="py-24 max-w-7xl mx-auto px-6 md:px-12">
+        <section className="py-24 section-container">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16">
             
             {/* Left: Gallery & Amenities */}
@@ -242,8 +242,8 @@ export default function ProjectDetailPage({ params }) {
               
               {/* Drone Thumbnails gallery */}
               <div className="mb-12">
-                <h3 className="text-lg font-black text-navy-royal mb-6 tracking-tight">Drone View & Layout Gallery</h3>
-                <div className="w-full h-80 rounded-2xl overflow-hidden bg-slate-900 mb-4 border border-slate-200 shadow-inner">
+                <h3 className="text-lg font-black text-white mb-6 tracking-tight">Drone View & Layout Gallery</h3>
+                <div className="w-full h-80 rounded-2xl overflow-hidden bg-slate-950 mb-4 border border-white/5 shadow-inner">
                   {project.media[activeMediaIndex].type === "video" ? (
                     <video
                       src={project.media[activeMediaIndex].src}
@@ -283,7 +283,7 @@ export default function ProjectDetailPage({ params }) {
 
               {/* Description */}
               <div className="mb-12">
-                <h3 className="text-lg font-black text-navy-royal mb-4 tracking-tight">Project Summary</h3>
+                <h3 className="text-lg font-black text-white mb-4 tracking-tight">Project Summary</h3>
                 <p className="text-sm text-slate-light leading-relaxed mb-6">
                   {project.description} This plotted layout development represents a signature real estate benchmark in the area. Spanning gated bounds with complete landscaping, individual connection points, and security outposts.
                 </p>
@@ -294,16 +294,16 @@ export default function ProjectDetailPage({ params }) {
 
               {/* Amenities Grid */}
               <div className="mb-12">
-                <h3 className="text-lg font-black text-navy-royal mb-6 tracking-tight">Premium Infrastructure</h3>
+                <h3 className="text-lg font-black text-white mb-6 tracking-tight">Premium Infrastructure</h3>
                 <div className="grid grid-cols-2 gap-4">
                   {project.amenities.map((item, idx) => {
                     const Icon = item.icon;
                     return (
-                      <div key={idx} className="flex items-center gap-3 p-4 rounded-xl border border-slate-100 bg-slate-50">
+                      <div key={idx} className="flex items-center gap-3 p-4 rounded-xl border border-white/5 bg-background-alt/60">
                         <div className="w-9 h-9 rounded-lg bg-gold-primary/10 flex items-center justify-center text-gold-primary">
                           <Icon className="w-4 h-4" />
                         </div>
-                        <span className="text-xs font-bold text-navy-royal">{item.text}</span>
+                        <span className="text-xs font-bold text-white">{item.text}</span>
                       </div>
                     );
                   })}
@@ -316,8 +316,8 @@ export default function ProjectDetailPage({ params }) {
             <div className="lg:col-span-5 text-left">
               
               {/* Interactive Layout Map SVG */}
-              <div className="p-6 border border-slate-200 rounded-3xl bg-slate-50 mb-12 relative shadow-inner">
-                <h3 className="text-base font-extrabold text-navy-royal mb-1 tracking-tight flex items-center gap-2">
+              <div className="p-6 border border-white/5 rounded-3xl bg-background-alt/60 mb-12 relative shadow-inner">
+                <h3 className="text-base font-extrabold text-white mb-1 tracking-tight flex items-center gap-2">
                   <LayoutGrid className="w-4.5 h-4.5 text-gold-primary" />
                   Interactive Plot Layout Map
                 </h3>
@@ -326,7 +326,7 @@ export default function ProjectDetailPage({ params }) {
                 </p>
 
                 {/* SVG Element */}
-                <div className="w-full aspect-[4/3] bg-white rounded-2xl border border-slate-200 relative overflow-hidden flex items-center justify-center p-2 shadow-sm">
+                <div className="w-full aspect-[4/3] bg-background rounded-2xl border border-white/5 relative overflow-hidden flex items-center justify-center p-2 shadow-sm">
                   <svg
                     viewBox="0 0 310 270"
                     className="w-full h-full"
@@ -359,7 +359,7 @@ export default function ProjectDetailPage({ params }) {
                         x={plot.x + 22.5}
                         y={plot.y + 27}
                         textAnchor="middle"
-                        className="font-mono text-[9px] font-black pointer-events-none select-none fill-navy-royal/85"
+                        className="font-mono text-[9px] font-black pointer-events-none select-none fill-white/85"
                       >
                         {plot.label}
                       </text>
@@ -405,7 +405,7 @@ export default function ProjectDetailPage({ params }) {
 
               {/* Nearby Connection Landmarks */}
               <div className="mb-12">
-                <h3 className="text-base font-extrabold text-navy-royal mb-5 tracking-tight border-b border-slate-100 pb-2">
+                <h3 className="text-base font-extrabold text-white mb-5 tracking-tight border-b border-white/5 pb-2">
                   Nearby Landmarks
                 </h3>
                 <div className="flex flex-col gap-4">
@@ -413,11 +413,11 @@ export default function ProjectDetailPage({ params }) {
                     const Icon = item.icon;
                     return (
                       <div key={idx} className="flex items-start gap-3 text-xs text-slate-muted">
-                        <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0">
+                        <div className="w-7 h-7 rounded-lg bg-background flex items-center justify-center text-slate-400 shrink-0 border border-white/5">
                           <Icon className="w-4 h-4" />
                         </div>
                         <div>
-                          <strong className="text-navy-royal font-extrabold text-[10px] uppercase block tracking-wider leading-none mb-1">{item.label}</strong>
+                          <strong className="text-white font-extrabold text-[10px] uppercase block tracking-wider leading-none mb-1">{item.label}</strong>
                           <span className="text-[11px] leading-tight block">{item.text}</span>
                         </div>
                       </div>
@@ -427,12 +427,12 @@ export default function ProjectDetailPage({ params }) {
               </div>
 
               {/* Action drawer scheduling */}
-              <div className="p-6 border border-slate-200 rounded-3xl bg-slate-50 flex flex-col gap-4">
-                <h3 className="text-base font-extrabold text-navy-royal mb-1 tracking-tight">Direct Enquiries</h3>
+              <div className="p-6 border border-white/5 rounded-3xl bg-background-alt/60 flex flex-col gap-4">
+                <h3 className="text-base font-extrabold text-white mb-1 tracking-tight">Direct Enquiries</h3>
                 
                 <button
                   onClick={handleDownloadBrochure}
-                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl border border-slate-200 bg-white hover:border-gold-primary hover:text-gold-primary text-xs font-bold uppercase tracking-widest transition-all cursor-pointer font-sans"
+                  className="w-full inline-flex items-center justify-center gap-2 py-3 rounded-xl border border-white/10 bg-background hover:border-gold-primary hover:text-gold-primary text-white hover:bg-gold-primary/10 text-xs font-bold uppercase tracking-widest transition-all cursor-pointer font-sans"
                   disabled={brochureStatus === "downloading"}
                 >
                   <Download className="w-4 h-4" />

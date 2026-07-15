@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from "react";
-import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
-import { ChevronLeft, ChevronRight, Quote, Star } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { motion, useReducedMotion } from "framer-motion";
+import { Quote, Star } from "lucide-react";
+import { Motion } from "@motion.page/sdk";
 
 export default function Testimonials() {
   const shouldReduceMotion = useReducedMotion();
-  const [activeIdx, setActiveIdx] = useState(0);
+  const containerRef = useRef(null);
 
   const feedbacks = [
     {
@@ -15,6 +16,7 @@ export default function Testimonials() {
       location: "Chennai",
       rating: 5,
       comment: "We purchased a plot at the Sriperumbudur layout. The entire legal vetting process was extremely transparent. Mahira's team took care of all DTCP documentation, making it completely stress-free for senior citizens.",
+      initials: "RS",
     },
     {
       name: "Meera Krishnan",
@@ -22,6 +24,7 @@ export default function Testimonials() {
       location: "Hosur",
       rating: 5,
       comment: "Mahira Developers has established amazing infrastructure in Berigai. The wide concrete roads, gated arch, and underground water utilities are built to last. Highly recommended for immediate villa construction.",
+      initials: "MK",
     },
     {
       name: "Dr. Anirudh Sen",
@@ -29,30 +32,47 @@ export default function Testimonials() {
       location: "Vellore",
       rating: 5,
       comment: "Invested in Arani phase 1 residential plots. The land value appreciation has already exceeded my initial projections by 20%. Document registration was clean and completed in a single day.",
+      initials: "AS",
     },
   ];
 
-  const handlePrev = () => {
-    setActiveIdx((prev) => (prev === 0 ? feedbacks.length - 1 : prev - 1));
-  };
+  useEffect(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced || shouldReduceMotion) return;
 
-  const handleNext = () => {
-    setActiveIdx((prev) => (prev === feedbacks.length - 1 ? 0 : prev + 1));
-  };
+    const motionInstance = Motion("testimonials-reveal", ".testimonial-card", {
+      from: { opacity: 0, y: 35 },
+      to: { opacity: 1, y: 0 },
+      duration: 0.8,
+      ease: "power2.out",
+      stagger: { each: 0.15, from: "start" },
+    }).onScroll({
+      start: "top 85%",
+      scrub: false,
+    });
+
+    return () => {
+      try {
+        motionInstance?.kill();
+      } catch (err) {
+        // Safe fail
+      }
+    };
+  }, [shouldReduceMotion]);
 
   return (
-    <section className="py-24 bg-background-alt relative overflow-hidden border-t border-slate-100">
+    <section ref={containerRef} className="section-y bg-background-alt relative overflow-hidden border-t border-white/5">
       {/* Background radial glows */}
       <div className="absolute top-1/3 left-10 w-[400px] h-[400px] rounded-full bg-navy-royal/5 blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/3 right-10 w-[450px] h-[450px] rounded-full bg-gold-primary/5 blur-[130px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10 text-center">
+      <div className="section-container">
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto mb-16">
+        <div className="max-w-3xl mx-auto mb-16 text-center">
           <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-3 block">
             Client Testimonials
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-navy-royal mb-4 tracking-tight">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-white mb-4 tracking-tight">
             Trusted by Happy Families
           </h2>
           <p className="text-xs sm:text-sm text-slate-muted max-w-xl mx-auto leading-relaxed">
@@ -60,78 +80,51 @@ export default function Testimonials() {
           </p>
         </div>
 
-        {/* Carousel Block */}
-        <div className="relative glass-card bg-white border border-slate-200 shadow-xl rounded-3xl p-8 md:p-12 max-w-3xl mx-auto min-h-[350px] flex flex-col justify-between overflow-hidden">
-          {/* Decorative giant quotes */}
-          <Quote className="absolute top-8 right-8 w-24 h-24 text-slate-100 pointer-events-none stroke-[1]" />
-
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeIdx}
-              initial={{ opacity: 0, x: shouldReduceMotion ? 0 : 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: shouldReduceMotion ? 0 : -30 }}
-              transition={{ duration: 0.4, ease: "easeInOut" }}
-              className="flex-1 flex flex-col justify-between text-left relative z-10"
+        {/* Multi-column Testimonial Cards Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 text-left max-w-7xl mx-auto relative z-10">
+          {feedbacks.map((item, idx) => (
+            <div
+              key={idx}
+              style={{
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+              }}
+              className="testimonial-card relative p-8 rounded-3xl border border-white/10 bg-background/55 shadow-xl flex flex-col justify-between overflow-hidden transition-all duration-300 hover:border-gold-primary/20"
             >
-              <div>
+              {/* Decorative Quote */}
+              <Quote className="absolute top-6 right-6 w-12 h-12 text-white/5 pointer-events-none stroke-[1.5]" />
+
+              <div className="flex-1">
                 {/* Stars */}
-                <div className="flex gap-1 mb-6">
-                  {[...Array(feedbacks[activeIdx].rating)].map((_, i) => (
+                <div className="flex gap-1 mb-5">
+                  {[...Array(item.rating)].map((_, i) => (
                     <Star key={i} className="w-4 h-4 fill-gold-primary text-gold-primary" />
                   ))}
                 </div>
 
                 {/* Comment Text */}
-                <p className="text-sm md:text-base text-navy-royal/90 italic leading-relaxed mb-8 font-sans font-medium">
-                  "{feedbacks[activeIdx].comment}"
+                <p className="text-xs sm:text-sm text-white/95 leading-relaxed italic mb-8 font-sans font-medium">
+                  "{item.comment}"
                 </p>
               </div>
 
-              {/* Author detail info */}
-              <div className="flex items-center justify-between border-t border-slate-100 pt-6">
+              {/* User Avatar & Identity details */}
+              <div className="flex items-center gap-3 border-t border-white/5 pt-5 mt-auto">
+                {/* Circular Profile Avatar Container */}
+                <div className="w-10 h-10 rounded-full bg-gold-primary/10 border border-gold-primary/20 flex items-center justify-center font-bold text-gold-primary text-xs shrink-0 select-none shadow-sm shadow-gold-primary/5">
+                  {item.initials}
+                </div>
+
                 <div>
-                  <h4 className="text-sm sm:text-base font-extrabold text-navy-royal tracking-tight">
-                    {feedbacks[activeIdx].name}
+                  <h4 className="text-xs sm:text-sm font-extrabold text-white tracking-tight leading-none mb-1">
+                    {item.name}
                   </h4>
-                  <p className="text-[10px] sm:text-xs font-bold text-slate-muted uppercase tracking-wider">
-                    {feedbacks[activeIdx].role} &bull; {feedbacks[activeIdx].location}
+                  <p className="text-[9px] sm:text-[10px] font-bold text-slate-muted uppercase tracking-wider leading-none">
+                    {item.role}
                   </p>
                 </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Carousel Arrows */}
-          <div className="absolute bottom-8 right-8 flex gap-3 z-20">
-            <button
-              onClick={handlePrev}
-              className="w-10 h-10 rounded-full border border-slate-200 bg-white hover:border-gold-primary hover:text-gold-primary flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-102"
-              aria-label="Previous testimonial"
-            >
-              <ChevronLeft className="w-4 h-4" />
-            </button>
-            <button
-              onClick={handleNext}
-              className="w-10 h-10 rounded-full border border-slate-200 bg-white hover:border-gold-primary hover:text-gold-primary flex items-center justify-center transition-all cursor-pointer shadow-sm hover:scale-102"
-              aria-label="Next testimonial"
-            >
-              <ChevronRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-
-        {/* Slide Indicator Dots */}
-        <div className="flex justify-center gap-2 mt-8">
-          {feedbacks.map((_, idx) => (
-            <button
-              key={idx}
-              onClick={() => setActiveIdx(idx)}
-              className={`w-2 h-2 rounded-full transition-all cursor-pointer ${
-                activeIdx === idx ? "w-6 bg-gold-primary" : "bg-slate-300 hover:bg-slate-400"
-              }`}
-              aria-label={`Go to slide ${idx + 1}`}
-            />
+            </div>
           ))}
         </div>
       </div>

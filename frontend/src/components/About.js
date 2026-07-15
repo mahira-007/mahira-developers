@@ -71,7 +71,7 @@ export default function About() {
   };
 
   return (
-    <section id="about" className="py-24 bg-white relative overflow-hidden border-t border-slate-100">
+    <section id="about" className="section-y bg-background relative overflow-hidden border-t border-white/5">
       {/* Background shape 1 (GSAP Parallax) */}
       <div
         ref={shape1Ref}
@@ -83,7 +83,7 @@ export default function About() {
         className="absolute -bottom-24 -left-24 w-[400px] h-[400px] rounded-full bg-navy-royal/5 blur-[120px] pointer-events-none"
       />
 
-      <div className="max-w-7xl mx-auto px-6 md:px-12 relative z-10 text-left">
+      <div className="section-container text-left">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           
           {/* Left Side: About Text */}
@@ -91,7 +91,7 @@ export default function About() {
             <span className="text-xs uppercase tracking-widest text-gold-primary font-extrabold mb-3 block">
               Our Identity
             </span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-navy-royal mb-6 tracking-tight">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white mb-6 tracking-tight">
               Commitment to Structural Excellence
             </h2>
             <p className="text-base text-slate-light mb-6 leading-relaxed">
@@ -117,12 +117,12 @@ export default function About() {
                   key={idx}
                   variants={itemVariants}
                   whileHover={{ y: -5, transition: { duration: 0.2 } }}
-                  className="p-6 rounded-2xl border border-slate-200/80 bg-background-alt shadow-sm hover:border-gold-primary/40 hover:shadow-lg transition-all duration-300"
+                  className="p-6 rounded-2xl border border-white/5 bg-background-alt/65 shadow-lg hover:border-gold-primary/30 transition-all duration-300"
                 >
                   <div className="w-10 h-10 rounded-xl bg-gold-primary/10 flex items-center justify-center text-gold-primary mb-5 shadow-inner">
                     <Icon className="w-5 h-5" />
                   </div>
-                  <h4 className="text-sm font-extrabold text-navy-royal mb-2 uppercase tracking-wider">
+                  <h4 className="text-sm font-extrabold text-white mb-2 uppercase tracking-wider">
                     {value.label}
                   </h4>
                   <p className="text-xs text-slate-muted leading-relaxed">

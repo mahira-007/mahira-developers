@@ -12,12 +12,12 @@ export default function CTA() {
   };
 
   return (
-    <section className="py-24 bg-navy-royal relative overflow-hidden">
+    <section className="section-y bg-navy-royal relative overflow-hidden">
       {/* Background radial highlights */}
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full bg-gold-primary/10 blur-[130px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full bg-navy-light/10 blur-[120px] pointer-events-none" />
 
-      <div className="max-w-5xl mx-auto px-6 md:px-12 relative z-10 text-center text-white">
+      <div className="section-container text-center text-white">
         <motion.div
           initial={{ opacity: 0, y: shouldReduceMotion ? 0 : 30 }}
           whileInView={{ opacity: 1, y: 0 }}

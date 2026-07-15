@@ -1,19 +1,29 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FFFFFF; /* Pure White background */
-  --background-alt: #F8FAFC; /* Luxury Off-White */
-  --foreground: #0F172A; /* Slate 900 for modern high contrast readability */
-  --navy-royal: #0A1128; /* Deep Royal Navy Blue */
-  --navy-light: #111E45; /* Lighter navy for gradients/cards */
+  --background: #040814; /* Deep premium dark navy-black background */
+  --background-alt: #090f26; /* Slightly lighter luxury dark navy for section alternate */
+  --foreground: #f8fafc; /* Luxury clean off-white text */
+  --navy-royal: #040814; /* Deep navy matching background */
+  --navy-light: #0d1530; /* Lighter navy for cards/borders */
   
   --gold-primary: #C5A85D; /* Sophisticated Premium Gold */
   --gold-light: #E6D5B3; /* Champagne Gold tint */
   --gold-dark: #A1823B; /* Deep Amber Gold shadow */
   
-  --slate-text: #0F172A;
-  --slate-light: #334155;
-  --slate-muted: #64748B;
+  --slate-text: #f8fafc;
+  --slate-light: #cbd5e1; /* slate-300 for premium readability */
+  --slate-muted: #94a3b8; /* slate-400 for subtext */
+
+  /* ── Typography ─────────────────────────────────── */
+  --font-body:    var(--font-body, ui-sans-serif, system-ui, sans-serif);
+  --font-heading: var(--font-heading, ui-sans-serif, system-ui, sans-serif);
+
+  /* ── Layout grid system ─────────────────────────── */
+  --section-padding-x: clamp(1.5rem, 5vw, 5rem); /* responsive horizontal padding */
+  --section-padding-y: clamp(5rem, 8vw, 7rem);   /* responsive vertical padding   */
+  --section-max-w: 80rem;                          /* 1280px / max-w-7xl            */
+  --grid-gap: clamp(1.5rem, 3vw, 2.5rem);          /* consistent column gap         */
 }
 
 @theme inline {
@@ -31,8 +41,8 @@
   --color-slate-light: var(--slate-light);
   --color-slate-muted: var(--slate-muted);
   
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:    var(--font-body);
+  --font-heading: var(--font-heading);
 }
 
 html {
@@ -44,8 +54,48 @@ html {
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
   overflow-x: hidden;
+  font-size: 1rem;
+  line-height: 1.8; /* Generous line height */
+}
+
+/* ── Typography and Paragraphs ────────────────────────────────────────── */
+p {
+  line-height: 1.8; /* Generous line height for body paragraphs */
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ── Heading base styles ───────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  line-height: 1.2;
+}
+
+/* ── Section container utility ─────────────────────────────────────────── */
+.section-container {
+  max-width: var(--section-max-w);
+  margin-inline: auto;
+  padding-inline: var(--section-padding-x);
+  position: relative;
+  z-index: 10;
+}
+
+.section-y {
+  padding-block: var(--section-padding-y);
+  position: relative;
+}
+
+/* Subtle radial glow behind main sections to draw depth */
+section.section-y::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(197, 168, 93, 0.04) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
 }
 
 /* Premium Scrollbar */
@@ -53,7 +103,7 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: var(--navy-royal);
+  background: #040814;
 }
 ::-webkit-scrollbar-thumb {
   background: var(--gold-primary);
@@ -71,7 +121,7 @@ body {
 }
 
 .luxury-text-navy {
-  background: linear-gradient(135deg, var(--navy-royal) 0%, var(--navy-light) 100%);
+  background: linear-gradient(135deg, #ffffff 0%, var(--gold-light) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
@@ -81,21 +131,21 @@ body {
 }
 
 .glass-navbar {
-  background: rgba(10, 17, 40, 0.75);
+  background: rgba(4, 8, 20, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid rgba(197, 168, 93, 0.15);
 }
 
 .glass-card-dark {
-  background: rgba(10, 17, 40, 0.8);
+  background: rgba(13, 21, 48, 0.7);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(197, 168, 93, 0.15);
 }
 
 .glass-card-light {
-  background: rgba(255, 255, 255, 0.75);
+  background: rgba(13, 21, 48, 0.45);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(197, 168, 93, 0.1);
