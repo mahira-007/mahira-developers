@@ -1,0 +1,97 @@
+/**
+ * SDKRegistry - Central registry for all optional SDK modules
+ *
+ * Optional modules register themselves here when loaded.
+ * Core modules access features through this registry with optional chaining.
+ * This enables tree-shaking: unused modules aren't bundled.
+ */
+import type { ParsedFilterFunction } from '../utils/FilterParser';
+import type { ParsedDrawSVG } from '../utils/DrawSVGParser';
+import type { ParsedClipPath } from '../utils/ClipPathParser';
+import type { AnimationTarget, StaggerVars, SplitType, FlapConfig, MaskPadding } from '../types';
+import type { TriggerManager } from '../triggers/TriggerManager';
+import type { FlapController, FlapCharDriver, UserPropEntry } from '../utils/TextFlapper';
+interface ColorParserFunctions {
+    parseColor: (color: string, element?: Element) => Float32Array | null;
+    getCurrentColor: (element: Element, property: string) => Float32Array;
+}
+interface FilterParserFunctions {
+    parseFilter: (filter: string) => ParsedFilterFunction[] | null;
+    getCurrentFilter: (element: Element) => ParsedFilterFunction[];
+    mergeFilterArrays: (start: ParsedFilterFunction[], end: ParsedFilterFunction[]) => {
+        start: ParsedFilterFunction[];
+        end: ParsedFilterFunction[];
+    };
+    interpolateFilters: (start: ParsedFilterFunction[], end: ParsedFilterFunction[], progress: number) => ParsedFilterFunction[];
+    filterToString: (filters: ParsedFilterFunction[]) => string;
+}
+interface DrawSVGParserFunctions {
+    parseDrawSVG: (value: string | {
+        start?: number;
+        end?: number;
+    }, element?: Element) => ParsedDrawSVG | null;
+    getCurrentDrawSVG: (element: Element) => ParsedDrawSVG;
+    getPathLength: (element: Element) => number;
+    applyDrawSVG: (element: Element, start: number, end: number, length: number) => void;
+}
+interface ClipPathParserFunctions {
+    parseClipPath: (value: string) => ParsedClipPath | null;
+    getCurrentClipPath: (element: Element) => ParsedClipPath | null;
+    interpolateClipPaths: (start: ParsedClipPath, end: ParsedClipPath, progress: number) => ParsedClipPath;
+    clipPathToString: (parsed: ParsedClipPath) => string;
+    canInterpolate: (start: ParsedClipPath, end: ParsedClipPath) => boolean;
+}
+interface TextSplitterFunctions {
+    split: (element: Element, type: SplitType, options?: {
+        mask?: boolean;
+        maskPadding?: MaskPadding;
+        consumer?: object;
+    }) => HTMLElement[];
+    revert: (element: Element, consumer?: object) => boolean;
+    isSplit: (element: Element) => boolean;
+}
+interface StyleResetFunctions {
+    registerAnimatedProps: (element: Element, props: string[]) => void;
+    clearAnimationStylesForProps: (element: Element, props: string[]) => void;
+    clearAnimationStylesAndUnregister: (element: Element) => void;
+    clearPinStylesAndUnregister: (element: Element) => void;
+}
+interface FitResolverFunctions {
+    registerPendingSetup(animation: import('../core/Animation').Animation, element: Element, fitConfig: import('../types').FitConfig, propTweenPool: typeof import('../memory/PropTweenPool').PropTweenPool): void;
+}
+interface TextFlapperFunctions {
+    prepare: (charElements: HTMLElement[], config: FlapConfig, continuous?: boolean, userProps?: UserPropEntry[]) => FlapCharDriver[];
+    flap: (charElements: HTMLElement[], config: FlapConfig, staggerDelays?: number[], continuous?: boolean) => FlapController;
+    revert: (charElements: HTMLElement[]) => void;
+}
+/**
+ * Factory slot for the optional reactive responsive runtime. The
+ * ResponsiveManager module self-registers `create` here when loaded, so
+ * core/Motion can instantiate a manager without a static import — keeping the
+ * module tree-shaken out of bundles that have no responsive timelines.
+ */
+interface ResponsiveFactory {
+    create: () => import('../responsive/ResponsiveManager').ResponsiveManager;
+}
+/**
+ * Unified registry for all optional SDK features.
+ * Each slot is null until the corresponding module loads and self-registers.
+ */
+export declare const SDKRegistry: {
+    color: ColorParserFunctions | null;
+    filter: FilterParserFunctions | null;
+    drawSVG: DrawSVGParserFunctions | null;
+    clipPath: ClipPathParserFunctions | null;
+    stagger: {
+        resolve: (targets: AnimationTarget[], stagger: number | StaggerVars) => number[];
+    } | null;
+    textSplitter: TextSplitterFunctions | null;
+    textFlapper: TextFlapperFunctions | null;
+    triggerManager: {
+        getInstance: () => TriggerManager;
+    } | null;
+    styleReset: StyleResetFunctions | null;
+    fit: FitResolverFunctions | null;
+    responsive: ResponsiveFactory | null;
+};
+export {};

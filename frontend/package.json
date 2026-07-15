@@ -12,7 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@motion.page/sdk": "^1.2.5",
+    "@motion.page/sdk": "file:./src/libs/motion-page-sdk",
     "framer-motion": "^12.42.2",
     "gsap": "^3.15.0",
     "lenis": "^1.3.25",

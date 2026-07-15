@@ -1,0 +1,18 @@
+/**
+ * PropertyParser constants — property-name sets used to classify and default
+ * animation properties.
+ */
+export declare const TRANSFORM_PROPS: Set<string>;
+export declare const PX_PROPS: Set<string>;
+export declare const DEG_PROPS: Set<string>;
+export declare const STRING_PROPS: Set<string>;
+export declare const TRANSFORM_CONFIG_STRING_PROPS: Set<string>;
+export declare const KEYWORD_PROPS: Set<string>;
+export declare const UNITLESS_PROPS: Set<string>;
+export declare const COLOR_PROPS: Set<string>;
+export declare const NAMED_COLORS: Set<string>;
+/**
+ * Properties that support "auto" value resolution.
+ * Only layout properties where the browser can compute a natural value make sense.
+ */
+export declare const AUTO_PROPS: Set<string>;

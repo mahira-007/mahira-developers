@@ -1,0 +1,67 @@
+/**
+ * MouseMoveTrigger
+ *
+ * Triggers timelines based on mouse movement:
+ * - distance: progress based on distance from center of viewport/target
+ * - axis: progress based on X/Y position within viewport/target
+ *
+ * Supports:
+ * - Viewport or custom target element tracking
+ * - Optional smoothing (lerp interpolation)
+ * - Custom start/leave progress values
+ * - Per-element triggers with "each" mode
+ */
+import type { MouseMoveConfig } from '../types';
+import type { Timeline } from '../core/Timeline';
+import { BaseTrigger } from './BaseTrigger';
+export declare class MouseMoveTrigger extends BaseTrigger<MouseMoveConfig> {
+    private _targets;
+    private _listeners;
+    private _frozenRects;
+    private _state;
+    private _targetState;
+    private _tickerCallback?;
+    private _pointerMoveHandler;
+    private _activeTarget;
+    private readonly _defaultStartProgress;
+    private readonly _defaultLeaveProgress;
+    constructor(timeline: Timeline, config: MouseMoveConfig);
+    /**
+     * Set up mouse event listeners once DOM is ready.
+     */
+    protected _onEnable(): void;
+    /**
+     * Remove all event listeners and stop the smoothing ticker.
+     */
+    protected _onDisable(): void;
+    private _addViewportListeners;
+    /**
+     * Re-snapshot frozen rects after layout changes (e.g. window resize).
+     * Called by TriggerManager on resize.
+     */
+    refresh(): void;
+    private _scrollX;
+    private _scrollY;
+    /**
+     * Capture an element's layout rect in DOCUMENT coordinates (viewport rect at
+     * rest + current scroll). getLayoutRect strips transforms so an animating
+     * target doesn't feed back into the measurement.
+     */
+    private _captureDocRect;
+    /**
+     * Convert a document-space rect to the current viewport position using the
+     * live scroll offset. This is what makes a target captured below the fold
+     * become hittable once it scrolls into view.
+     */
+    private _viewportRect;
+    private _addTargetListeners;
+    private _handleTargetPointerMove;
+    private _findTargetAtPoint;
+    private _handleViewportMouseMove;
+    private _handleTargetMouseMove;
+    private _handleMouseLeave;
+    private _applyProgress;
+    private _startSmoothingTicker;
+    private _lerp;
+    private _updateTimelineProgress;
+}
